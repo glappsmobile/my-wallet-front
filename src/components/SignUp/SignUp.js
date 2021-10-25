@@ -3,31 +3,84 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import Button from '../shared/Button';
 import Input from '../shared/Input';
+import SuccessMessage from './SuccessMessage';
+
 import { Ellipsis } from "react-spinners-css";
+import { signUp } from '../../services/myWallet.services';
+
 
 const SignUp = () => {
+    const [registered, setRegistered] = useState(false);
+
     const [formData, setFormData] = useState({
         name: "Glauco",
         email: "email@teste.com",
-        password: "123456",
-        confirmPassword: "123456"
-    });    
+        password: "12345678",
+        confirmPassword: "12345678"
+    });
+
+    const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
 
-    const SignInRequest = (e) => {
+    if (registered) {
+        return (
+            <Container>
+                <SuccessMessage />
+            </Container>
+        )
+    }
+
+    const setEmail = (email) => {
+        if (errors.email){
+            setErrors({ ...errors, email: false });
+        }
+        setFormData({...formData, email});
+    }
+
+    const SignUpRequest = (e) => {
         e.preventDefault();
+        setIsLoading(true);
+        const { name, email, password, confirmPassword } = formData;
+
+        if (password !== confirmPassword) {
+            setErrors({ ...errors, password:"As senhas não coincidem"})
+            return;
+        }
+
+        signUp({ name, email, password})
+            .then((response) => {
+                console.log(response.status);
+                setRegistered(true);
+                setIsLoading(false);
+            })
+            .catch((error) => {
+                const status = error.response.status;
+
+                if (status === 409){
+                    setErrors({...errors, email: "Este email já está cadastrado"});
+                }
+
+                console.log(error.response.status);
+                setIsLoading(false);
+            });
         console.log(formData);
     }
 
     return (
         <Container>
             <Title>MyWallet</Title>
-            <Form onSubmit={SignInRequest}>
-
+            <Form onSubmit={SignUpRequest}>
+                {errors.general && (
+                    <ErrorText>
+                        {errors.general}
+                    </ErrorText>
+                )}
                 <Input
                     placeholder="Nome"
                     type="text"
                     value={formData.name}
+                    minLength={2}
+                    maxLength={50}
                     onChange={(e) =>
                         setFormData({
                             ...formData,
@@ -42,20 +95,24 @@ const SignUp = () => {
                     placeholder="E-mail"
                     type="email"
                     value={formData.email}
-                    onChange={(e) =>
-                        setFormData({
-                            ...formData,
-                            email: e.target.value
-                        })
-                    }
+                    maxLength={150}
+                    onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
                     required
                 />
+
+                {errors.email && (
+                    <ErrorText>
+                        {errors.email}
+                    </ErrorText>
+                )}
 
                 <Input
                     placeholder="Senha"
                     type="password"
                     value={formData.password}
+                    minLength={8}
+                    maxLength={150}
                     onChange={(e) =>
                         setFormData({
                             ...formData,
@@ -80,6 +137,13 @@ const SignUp = () => {
                     required
                 />
 
+                {errors.password && (
+                    <ErrorText>
+                        {errors.password}
+                    </ErrorText>
+                )}
+
+
                 <Button type="submit">
                     {isLoading ? (
                         <Ellipsis color="white" />
@@ -96,6 +160,10 @@ const SignUp = () => {
         </Container>
     )
 }
+
+const ErrorText = styled.span`
+    color: tomato;
+`;
 
 
 const Container = styled.div`

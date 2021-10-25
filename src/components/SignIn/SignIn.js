@@ -4,6 +4,7 @@ import { useState } from "react";
 import Button from '../shared/Button';
 import Input from '../shared/Input';
 import { Ellipsis } from "react-spinners-css";
+import { signIn } from '../../services/myWallet.services';
 
 const SignIn = () => {
     const [formData, setFormData] = useState({
@@ -15,9 +16,8 @@ const SignIn = () => {
 
     const SignInRequest = (e) => {
         e.preventDefault();
-        console.log(`email: ${formData.email}`);
-        console.log(`senha: ${formData.password}`);
         setIsLoading(true);
+
     }
 
     return (
