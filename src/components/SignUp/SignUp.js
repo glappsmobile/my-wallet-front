@@ -63,7 +63,6 @@ const SignUp = () => {
                 console.log(error.response.status);
                 setIsLoading(false);
             });
-        console.log(formData);
     }
 
     return (
@@ -143,14 +142,13 @@ const SignUp = () => {
                     </ErrorText>
                 )}
 
-
-                <Button type="submit">
+                <ActionButton disabled={isLoading} type="submit">
                     {isLoading ? (
                         <Ellipsis color="white" />
                     ) : (
                         "Cadastrar"
                     )}
-                </Button>
+                </ActionButton>
             </Form>
             <ContainerLink>
                 <Link to="/sign-in">
@@ -163,6 +161,10 @@ const SignUp = () => {
 
 const ErrorText = styled.span`
     color: tomato;
+`;
+
+const ActionButton = styled(Button)`
+    height: 46px;
 `;
 
 

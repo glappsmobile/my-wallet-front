@@ -11,6 +11,14 @@ const GlobalStyle = createGlobalStyle`
         color: inherit;
 		cursor: pointer;
     }
+
+	svg {
+        cursor: pointer;
+    }
+
+    strong {
+        font-weight: bold;
+    }
 `;
 
 export default GlobalStyle;
