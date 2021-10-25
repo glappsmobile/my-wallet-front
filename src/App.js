@@ -1,6 +1,8 @@
 import ResetCss from "./styles/ResetCss";
 import GlobalStyle from "./styles/GlobalStyle";
 import SignIn from "./components/SignIn/SignIn";
+import SignUp from "./components/SignUp/SignUp";
+
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 function App() {
@@ -9,8 +11,12 @@ function App() {
       <ResetCss />
       <GlobalStyle />
       <Switch>
-        <Route path="/" exact>
+        <Route path="/sign-in" exact>
           <SignIn />
+        </Route>
+
+        <Route path="/sign-up" exact>
+          <SignUp />
         </Route>
 
         <Redirect to="/" />

@@ -5,19 +5,18 @@ import Button from '../shared/Button';
 import Input from '../shared/Input';
 import { Ellipsis } from "react-spinners-css";
 
-const SignIn = () => {
+const SignUp = () => {
     const [formData, setFormData] = useState({
+        name: "Glauco",
         email: "email@teste.com",
-        password: "123456"
-    });
-
+        password: "123456",
+        confirmPassword: "123456"
+    });    
     const [isLoading, setIsLoading] = useState(false);
 
     const SignInRequest = (e) => {
         e.preventDefault();
-        console.log(`email: ${formData.email}`);
-        console.log(`senha: ${formData.password}`);
-        setIsLoading(true);
+        console.log(formData);
     }
 
     return (
@@ -26,13 +25,27 @@ const SignIn = () => {
             <Form onSubmit={SignInRequest}>
 
                 <Input
+                    placeholder="Nome"
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) =>
+                        setFormData({
+                            ...formData,
+                            name: e.target.value
+                        })
+                    }
+                    disabled={isLoading}
+                    required
+                />
+
+                <Input
                     placeholder="E-mail"
                     type="email"
                     value={formData.email}
                     onChange={(e) =>
-                        setFormData({ 
-                            ...formData, 
-                            email: e.target.value 
+                        setFormData({
+                            ...formData,
+                            email: e.target.value
                         })
                     }
                     disabled={isLoading}
@@ -44,9 +57,23 @@ const SignIn = () => {
                     type="password"
                     value={formData.password}
                     onChange={(e) =>
-                        setFormData({ 
-                            ...formData, 
-                            password: e.target.value 
+                        setFormData({
+                            ...formData,
+                            password: e.target.value
+                        })
+                    }
+                    disabled={isLoading}
+                    required
+                />
+
+                <Input
+                    placeholder="Confirme a senha"
+                    type="password"
+                    value={formData.confirmPassword}
+                    onChange={(e) =>
+                        setFormData({
+                            ...formData,
+                            confirmPassword: e.target.value
                         })
                     }
                     disabled={isLoading}
@@ -57,19 +84,19 @@ const SignIn = () => {
                     {isLoading ? (
                         <Ellipsis color="white" />
                     ) : (
-                        "Entrar"
+                        "Cadastrar"
                     )}
                 </Button>
             </Form>
-
             <ContainerLink>
-                <Link to="/sign-up">
-                    Primeira vez? Cadastre-se
+                <Link to="/sign-in">
+                    Já tem uma conta? Entre agora!
                 </Link>
             </ContainerLink>
         </Container>
     )
 }
+
 
 const Container = styled.div`
     display: flex;
@@ -100,4 +127,4 @@ const ContainerLink = styled.div`
     margin-top: 36px;
 `;
 
-export default SignIn;
+export default SignUp;
