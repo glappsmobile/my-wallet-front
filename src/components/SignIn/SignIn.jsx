@@ -46,7 +46,7 @@ const SignIn = () => {
   };
 
   return (
-    <Container paddingX="large" center>
+    <Container paddingX="large">
       <Group>
         <Title>MyWallet</Title>
         <Form onSubmit={SignInRequest}>
@@ -59,7 +59,6 @@ const SignIn = () => {
           <Input
             placeholder="E-mail"
             type="email"
-            error=""
             value={formData.email}
             onChange={handleChange('email')}
             disabled={isLoading}
@@ -82,7 +81,9 @@ const SignIn = () => {
         </Form>
         <Group marginTop="huge">
           <Link to="/sign-up">
-            <Text fontWeight="bold">Primeira vez? Cadastre-se</Text>
+            <Text fontWeight="bold">
+              Primeira vez? Cadastre-se
+            </Text>
           </Link>
         </Group>
       </Group>

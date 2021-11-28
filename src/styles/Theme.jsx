@@ -5,6 +5,7 @@ import { ThemeProvider } from 'styled-components';
 const theme = {
   color: {
     primary: '#8C11BE',
+    primaryLight: '#AE28D6',
     text: '#fff',
     white: '#fff',
     danger: 'rgb(200, 100, 89)',
