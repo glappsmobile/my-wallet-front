@@ -71,6 +71,7 @@ const SignIn = () => {
           })}
           disabled={isLoading}
           required
+          password
         />
 
         <ActionButton type="submit" disabled={isLoading}>
