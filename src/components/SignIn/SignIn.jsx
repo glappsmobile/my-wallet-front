@@ -6,6 +6,8 @@ import Button from '../shared/Button';
 import Input from '../shared/Input';
 import Form from '../shared/Form';
 import Title from '../shared/Title';
+import Group from '../shared/Group';
+import Text from '../shared/Text';
 import { signIn } from '../../services/myWallet.services';
 
 const SignIn = () => {
@@ -82,12 +84,12 @@ const SignIn = () => {
           )}
         </ActionButton>
       </Form>
-
-      <ContainerLink>
+      <Group marginTop="huge">
         <Link to="/sign-up">
-          Primeira vez? Cadastre-se
+          <Text weight="bold">Primeira vez? Cadastre-se</Text>
         </Link>
-      </ContainerLink>
+      </Group>
+
     </Container>
   );
 };
@@ -106,14 +108,6 @@ const Container = styled.div`
     justify-content: center;
     height: 100vh;
     padding: 0 25px;
-`;
-
-const ContainerLink = styled.div`
-    font-weight: bold;
-    font-size: 15px;
-    color: white;
-    text-align: center;
-    margin-top: 36px;
 `;
 
 export default SignIn;
