@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
+import Container from '../shared/Container';
 import Button from '../shared/Button';
 import Input from '../shared/Input';
 import Form from '../shared/Form';
@@ -11,13 +12,18 @@ import { signIn } from '../../services/myWallet.services';
 
 const SignIn = () => {
   const history = useHistory();
-
   const [formData, setFormData] = useState({
-    email: 'email@teste.com',
-    password: '12345678',
+    email: '',
+    password: '',
   });
-  const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [errors, setErrors] = useState({
+    general: '',
+  });
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleChange = (prop) => (event) => {
+    setFormData({ ...formData, [prop]: event.target.value });
+  };
 
   const SignInRequest = (e) => {
     e.preventDefault();
@@ -30,17 +36,17 @@ const SignIn = () => {
       })
       .catch((error) => {
         const { status } = error.response;
-
         if (status === 401) {
           setErrors({ ...errors, general: 'Email ou senha incorretos' });
+        } else {
+          setErrors({ ...errors, general: 'Um erro inesperado aconteceu, tente novamente mais tarde' });
         }
-
         setIsLoading(false);
       });
   };
 
   return (
-    <Container>
+    <Container paddingX="large">
       <Title>MyWallet</Title>
       <Form onSubmit={SignInRequest}>
         {errors.general && (
@@ -53,10 +59,7 @@ const SignIn = () => {
           placeholder="E-mail"
           type="email"
           value={formData.email}
-          onChange={(e) => setFormData({
-            ...formData,
-            email: e.target.value,
-          })}
+          onChange={handleChange('email')}
           disabled={isLoading}
           required
         />
@@ -65,10 +68,7 @@ const SignIn = () => {
           placeholder="Senha"
           type="password"
           value={formData.password}
-          onChange={(e) => setFormData({
-            ...formData,
-            password: e.target.value,
-          })}
+          onChange={handleChange('password')}
           disabled={isLoading}
           required
           password
@@ -83,21 +83,12 @@ const SignIn = () => {
           <Text weight="bold">Primeira vez? Cadastre-se</Text>
         </Link>
       </Group>
-
     </Container>
   );
 };
 
 const ErrorText = styled.span`
     color: tomato;
-`;
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100vh;
-    padding: 0 25px;
 `;
 
 export default SignIn;
