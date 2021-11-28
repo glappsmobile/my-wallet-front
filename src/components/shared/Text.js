@@ -22,6 +22,10 @@ const Text = styled.span`
       return text('pink', weight || 'normal');
     }
 
+    if (variant === 'danger') {
+      return text('danger', weight || 'normal');
+    }
+
     return text('white', weight || 'normal');
   }}
 `;

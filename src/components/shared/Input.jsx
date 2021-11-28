@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import EyeIcon from './EyeIcon';
 import flexify from '../../styles/utils/flexify';
+import EyeIcon from './EyeIcon';
+import Text from './Text';
 
 const Input = ({
   password,
@@ -28,9 +29,9 @@ const Input = ({
         )}
       </InputWrapper>
       {error && (
-      <HelperText>
+      <Text variant="danger">
         {error}
-      </HelperText>
+      </Text>
       )}
     </InputGroup>
   );
@@ -59,12 +60,6 @@ const StyledInput = styled.input`
     font-family: "Raleway", sans-serif;
     font-size: 20px;
     line-height: 23.48px;
-`;
-
-const HelperText = styled.span`
-  font-size: 14px;
-  color: #df4759;
-  margin-top: 5px;
 `;
 
 const InputWrapper = styled.div`

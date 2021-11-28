@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
 import Container from '../shared/Container';
@@ -50,14 +49,15 @@ const SignIn = () => {
       <Title>MyWallet</Title>
       <Form onSubmit={SignInRequest}>
         {errors.general && (
-        <ErrorText>
+        <Text variant="danger">
           {errors.general}
-        </ErrorText>
+        </Text>
         )}
 
         <Input
           placeholder="E-mail"
           type="email"
+          error=""
           value={formData.email}
           onChange={handleChange('email')}
           disabled={isLoading}
@@ -86,9 +86,5 @@ const SignIn = () => {
     </Container>
   );
 };
-
-const ErrorText = styled.span`
-    color: tomato;
-`;
 
 export default SignIn;

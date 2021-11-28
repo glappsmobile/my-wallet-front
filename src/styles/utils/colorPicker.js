@@ -13,7 +13,7 @@ const colorPicker = (color) => {
     case 'pink':
       return '#e63c80';
     case 'danger':
-      return '#df4759';
+      return 'rgb(200, 100, 89)';
     case 'gray':
       return '#604848';
     case 'black':
