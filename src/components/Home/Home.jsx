@@ -1,34 +1,35 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useHistory } from "react-router";
+import React from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-    const history = useHistory();
-    const user = JSON.parse(localStorage.getItem("user"));
+  const user = JSON.parse(localStorage.getItem('user'));
 
-    return (
-        <Container>
-            <TitleContainer>
-                <Title>Olá, {user.name}</Title>
-            </TitleContainer>
+  return (
+    <Container>
+      <TitleContainer>
+        <Title>
+          Olá,
+          {' '}
+          {user.name}
+        </Title>
+      </TitleContainer>
 
-            
-
-            <ButtonsContainer>
-                <Link to="/deposit">
-                    <Button>
-                        Nova entrada
-                    </Button>
-                </Link>
-                <Link to="/withdrawal">
-                    <Button>
-                        Nova saída
-                    </Button>
-                </Link>
-            </ButtonsContainer>
-        </Container>
-    );
-}
+      <ButtonsContainer>
+        <Link to="/deposit">
+          <Button>
+            Nova entrada
+          </Button>
+        </Link>
+        <Link to="/withdrawal">
+          <Button>
+            Nova saída
+          </Button>
+        </Link>
+      </ButtonsContainer>
+    </Container>
+  );
+};
 
 const Container = styled.div`
     padding: 25px 25px 16px 25px;
@@ -83,6 +84,5 @@ const Button = styled.button`
         height: 22px;
     }
 `;
-
 
 export default Home;

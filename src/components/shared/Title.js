@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 const Title = styled.span`
     font-family: "Saira Stencil One", cursive;
