@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Link, useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
-import { Ellipsis } from 'react-spinners-css';
 import Button from '../shared/Button';
 import Input from '../shared/Input';
 import Form from '../shared/Form';
@@ -18,7 +17,7 @@ const SignIn = () => {
     password: '12345678',
   });
   const [errors, setErrors] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const SignInRequest = (e) => {
     e.preventDefault();
@@ -36,7 +35,6 @@ const SignIn = () => {
           setErrors({ ...errors, general: 'Email ou senha incorretos' });
         }
 
-        console.log(error.response.status);
         setIsLoading(false);
       });
   };
@@ -76,13 +74,9 @@ const SignIn = () => {
           password
         />
 
-        <ActionButton type="submit" disabled={isLoading}>
-          {isLoading ? (
-            <Ellipsis color="white" />
-          ) : (
-            'Entrar'
-          )}
-        </ActionButton>
+        <Button isLoading={isLoading} type="submit">
+          Entrar
+        </Button>
       </Form>
       <Group marginTop="huge">
         <Link to="/sign-up">
@@ -93,10 +87,6 @@ const SignIn = () => {
     </Container>
   );
 };
-
-const ActionButton = styled(Button)`
-    height: 46px;
-`;
 
 const ErrorText = styled.span`
     color: tomato;
