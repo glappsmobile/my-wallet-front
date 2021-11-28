@@ -46,43 +46,45 @@ const SignIn = () => {
   };
 
   return (
-    <Container paddingX="large">
-      <Title>MyWallet</Title>
-      <Form onSubmit={SignInRequest}>
-        {errors.general && (
-        <Text variant="danger">
-          {errors.general}
-        </Text>
-        )}
+    <Container paddingX="large" center>
+      <Group>
+        <Title>MyWallet</Title>
+        <Form onSubmit={SignInRequest}>
+          {errors.general && (
+          <Text variant="helper">
+            {errors.general}
+          </Text>
+          )}
 
-        <Input
-          placeholder="E-mail"
-          type="email"
-          error=""
-          value={formData.email}
-          onChange={handleChange('email')}
-          disabled={isLoading}
-          required
-        />
+          <Input
+            placeholder="E-mail"
+            type="email"
+            error=""
+            value={formData.email}
+            onChange={handleChange('email')}
+            disabled={isLoading}
+            required
+          />
 
-        <Input
-          placeholder="Senha"
-          type="password"
-          value={formData.password}
-          onChange={handleChange('password')}
-          disabled={isLoading}
-          required
-          password
-        />
+          <Input
+            placeholder="Senha"
+            type="password"
+            value={formData.password}
+            onChange={handleChange('password')}
+            disabled={isLoading}
+            required
+            password
+          />
 
-        <Button isLoading={isLoading} type="submit">
-          Entrar
-        </Button>
-      </Form>
-      <Group marginTop="huge">
-        <Link to="/sign-up">
-          <Text weight="bold">Primeira vez? Cadastre-se</Text>
-        </Link>
+          <Button isLoading={isLoading} type="submit">
+            Entrar
+          </Button>
+        </Form>
+        <Group marginTop="huge">
+          <Link to="/sign-up">
+            <Text fontWeight="bold">Primeira vez? Cadastre-se</Text>
+          </Link>
+        </Group>
       </Group>
     </Container>
   );

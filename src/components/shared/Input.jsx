@@ -29,7 +29,7 @@ const Input = ({
         )}
       </InputWrapper>
       {error && (
-      <Text variant="danger">
+      <Text variant="helper">
         {error}
       </Text>
       )}
