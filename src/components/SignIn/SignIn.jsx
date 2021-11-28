@@ -29,7 +29,8 @@ const SignIn = () => {
     setIsLoading(true);
     signIn(formData)
       .then((response) => {
-        localStorage.setItem('user', JSON.stringify(response.data));
+        const { token } = response.data;
+        localStorage.setItem('token', JSON.stringify(token));
         setIsLoading(false);
         history.push('/wallet');
       })
