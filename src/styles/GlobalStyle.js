@@ -1,24 +1,27 @@
 import { createGlobalStyle } from 'styled-components';
+import { css } from 'styled-components/macro';
 
 const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #8C11BE;
-    font-family: 'Raleway', sans-serif;
-  }
+  ${({ theme }) => css`
+    body {
+      background-color: ${theme.color.primary};
+      font-family: ${theme.font.family};
+    }
 
-  a {
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-  }
+    a {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
 
-  svg {
-    cursor: pointer;
-  }
+    svg {
+      cursor: pointer;
+    }
 
-  strong {
-    font-weight: bold;
-  }
+    strong {
+      font-weight: bold;
+    }
+  `}
 `;
 
 export default GlobalStyle;

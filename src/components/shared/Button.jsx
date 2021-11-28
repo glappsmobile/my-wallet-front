@@ -24,17 +24,6 @@ const Button = ({
     )}
   </StyledButton>
 );
-/*    > div {
-      ${flexify()}
-      width: 20px;
-      min-height: '';
-      height: fit-content;;
-      background-color: red;
-      position: relative;
-      div {
-        height: 20px;
-      }
-    } */
 
 Button.propTypes = {
   isLoading: PropTypes.bool,

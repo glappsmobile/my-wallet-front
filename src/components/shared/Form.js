@@ -1,11 +1,18 @@
 import styled from 'styled-components';
-import spacing from '../../styles/utils/spacing';
+import { css } from 'styled-components/macro';
 
 const Form = styled.form`
-  width: 100%;
-  display: grid;
-  row-gap: 10px;
-  margin-top: ${({ marginTop }) => spacing(marginTop)};
-  margin-bottom: ${({ marginBottom }) => spacing(marginBottom)};
+${({
+    theme,
+    marginTop = 'auto',
+    marginBottom = 'auto',
+  }) => css`
+    width: 100%;
+    display: grid;
+    row-gap:  ${theme.spacing.medium};
+    margin-top: ${theme.spacing[marginTop]};
+    margin-bottom: ${theme.spacing[marginBottom]};
+  `
+}
 `;
 export default Form;
