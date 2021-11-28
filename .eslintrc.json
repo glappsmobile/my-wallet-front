@@ -19,6 +19,7 @@
     ],
     "rules": {
         "react/function-component-definition":"off",
-        "react/jsx-no-constructed-context-values":"off"
+        "react/jsx-no-constructed-context-values":"off",
+        "react/jsx-props-no-spreading":"off"
     }
 }
