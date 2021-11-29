@@ -20,6 +20,7 @@ const Container = styled.div`
     margin-top: ${theme.spacing[marginTop]};
     background: ${theme.color[background]};
     padding: ${`${theme.spacing[paddingY]} ${theme.spacing[paddingX]}`};
+    animation: moveInRight 500ms;
   `
 }
 `;

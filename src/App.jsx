@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter, Route, Switch, Redirect,
 } from 'react-router-dom';
@@ -8,39 +8,54 @@ import GlobalStyle from './styles/GlobalStyle';
 import SignIn from './components/SignIn/SignIn';
 import SignUp from './components/SignUp/SignUp';
 import Wallet from './components/Wallet/Wallet';
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import AddCashFlow from './components/AddCashFlow/AddCashFlow';
+import UserContext from './contexts/UserContext';
 
-const App = () => (
-  <Theme>
+const App = () => {
+  const [user, setUser] = useState();
 
-    <BrowserRouter>
-      <ResetCss />
-      <GlobalStyle />
-      <Switch>
-        <Route path="/sign-in" exact>
-          <SignIn />
-        </Route>
+  useEffect(() => {
+    const token = JSON.parse(localStorage.getItem('token'));
+    if (token) {
+      setUser({ ...user, token });
+    }
+  }, []);
 
-        <Route path="/sign-up" exact>
-          <SignUp />
-        </Route>
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      <Theme>
+        <BrowserRouter>
+          <ResetCss />
+          <GlobalStyle />
+          <Switch>
+            <Route path="/sign-in" exact>
+              <SignIn />
+            </Route>
 
-        <Route path="/wallet" exact>
-          <Wallet />
-        </Route>
+            <Route path="/sign-up" exact>
+              <SignUp />
+            </Route>
 
-        <Route path="/add-inflow" exact>
-          <AddCashFlow />
-        </Route>
+            <Route path="/wallet" exact>
+              <ProtectedRoute>
+                <Wallet />
+              </ProtectedRoute>
+            </Route>
 
-        <Route path="/add-outflow" exact>
-          <AddCashFlow />
-        </Route>
+            <Route path="/add-inflow" exact>
+              <AddCashFlow />
+            </Route>
 
-        <Redirect to="/sign-in" />
-      </Switch>
-    </BrowserRouter>
-  </Theme>
-);
+            <Route path="/add-outflow" exact>
+              <AddCashFlow />
+            </Route>
 
+            <Redirect to="/sign-in" />
+          </Switch>
+        </BrowserRouter>
+      </Theme>
+    </UserContext.Provider>
+  );
+};
 export default App;

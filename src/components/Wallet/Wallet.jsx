@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { IoMdExit, IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
 import dayjs from 'dayjs';
 import { Link, useHistory } from 'react-router-dom';
 import { getCashFlow } from '../../services/myWallet.services';
+import UserContext from '../../contexts/UserContext';
 
-export default function Wallet() {
+const Wallet = () => {
   const history = useHistory();
-  const user = JSON.parse(localStorage.getItem('user'));
+  const { user } = useContext(UserContext);
   const [cashFlow, setCashFlow] = useState([]);
+  console.log(user);
 
   const logout = () => {
     localStorage.removeItem('user');
@@ -40,7 +42,6 @@ export default function Wallet() {
         <span>
           Olá,
           {' '}
-          {user.name}
         </span>
         <IoMdExit onClick={() => logout()} />
       </Title>
@@ -106,7 +107,7 @@ export default function Wallet() {
       </ButtonContainer>
     </Container>
   );
-}
+};
 
 const DateText = styled.span`
     margin-right: 5px;
@@ -226,3 +227,5 @@ const Ballance = styled.div`
         font-weight: bold;
     }
 `;
+
+export default Wallet;

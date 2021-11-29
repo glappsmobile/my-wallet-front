@@ -6,6 +6,7 @@ const GlobalStyle = createGlobalStyle`
     body {
       background-color: ${theme.color.primary};
       font-family: ${theme.font.family};
+      overflow: hidden;
     }
 
     a {
@@ -20,6 +21,18 @@ const GlobalStyle = createGlobalStyle`
 
     strong {
       font-weight: bold;
+    }
+
+    @keyframes moveInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(300px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translate(0);
+      }
     }
   `}
 `;
