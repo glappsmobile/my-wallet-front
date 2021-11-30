@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
 import UserContext from '../../contexts/UserContext';
 import Container from '../shared/Container';
+import * as myWalletService from '../../services/myWallet.services';
 
 const ProtectedRoute = ({ children }) => {
   const history = useHistory();
@@ -11,12 +12,30 @@ const ProtectedRoute = ({ children }) => {
   const { user, setUser } = useContext(UserContext);
 
   useEffect(() => {
-    const token = JSON.parse(localStorage.getItem('token'));
+    let token;
+    try {
+      token = JSON.parse(localStorage.getItem('token'));
+    } catch {
+      localStorage.removeItem('token');
+    }
+
     if (!token) {
       history.push('/sign-in');
       return null;
     }
-    setIsAuthenticated(true);
+
+    myWalletService.getUser(token)
+      .then((response) => {
+        setUser({
+          ...response.data, token,
+        });
+        setIsAuthenticated(true);
+      })
+      .catch(() => {
+        localStorage.removeItem('token');
+        history.push('/sign-in');
+      });
+
     return setUser({ ...user, token });
   }, []);
 

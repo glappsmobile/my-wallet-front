@@ -12,13 +12,16 @@ const signUp = (body) => axios.post(`${URL_API}/sign-up`, body);
 
 const signIn = (body) => axios.post(`${URL_API}/sign-in`, body);
 
-const addCashFlow = (body, token) => axios.post(`${URL_API}/cashflow`, body, getConfig(token));
+const getUser = (token) => axios.get(`${URL_API}/user`, getConfig(token));
 
-const getCashFlow = (token) => axios.get(`${URL_API}/cashflow`, getConfig(token));
+const addCashFlow = (body, token) => axios.post(`${URL_API}/transactions`, body, getConfig(token));
+
+const getCashFlow = (token) => axios.get(`${URL_API}/transactions`, getConfig(token));
 
 export {
   signUp,
   signIn,
+  getUser,
   addCashFlow,
   getCashFlow,
 };

@@ -6,7 +6,6 @@ const GlobalStyle = createGlobalStyle`
     body {
       background-color: ${theme.color.primary};
       font-family: ${theme.font.family};
-      overflow: hidden;
     }
 
     a {

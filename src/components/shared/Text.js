@@ -11,12 +11,18 @@ const Text = styled.span`
     marginTop = 'none',
     paddingX = 'none',
     paddingY = 'none',
+    maxWidth,
     variant = '',
   }) => {
     if (variant === 'helper') {
       color = 'danger';
       marginTop = 'small';
       fontSize = 'small';
+    }
+
+    if (variant === 'title') {
+      fontSize = 'extraLarge';
+      fontWeight = 'bold';
     }
 
     return css`
@@ -27,6 +33,16 @@ const Text = styled.span`
       font-size: ${theme.font.size[fontSize]};
       line-height: 21px;
       display: inline-block;
+
+      ${maxWidth && `
+        word-wrap: break-word;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: ${maxWidth};
+      `}
     `;
   }
 }
