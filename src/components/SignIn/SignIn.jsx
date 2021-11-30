@@ -1,5 +1,5 @@
+import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import React, { useState } from 'react';
 import Container from '../shared/Container';
 import Button from '../shared/Button';
 import Input from '../shared/Input';
@@ -8,9 +8,11 @@ import Title from '../shared/Title';
 import Group from '../shared/Group';
 import Text from '../shared/Text';
 import { signIn } from '../../services/myWallet.services';
+import UserContext from '../../contexts/UserContext';
 
 const SignIn = () => {
   const history = useHistory();
+  const { setUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -18,6 +20,7 @@ const SignIn = () => {
   const [errors, setErrors] = useState({
     general: '',
   });
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (prop) => (event) => {
@@ -30,6 +33,7 @@ const SignIn = () => {
     signIn(formData)
       .then((response) => {
         const { token } = response.data;
+        setUser({ token });
         localStorage.setItem('token', JSON.stringify(token));
         setIsLoading(false);
         history.push('/wallet');
@@ -46,7 +50,7 @@ const SignIn = () => {
   };
 
   return (
-    <Container paddingX="large" center>
+    <Container paddingX="large">
       <Group>
         <Title>MyWallet</Title>
         <Form onSubmit={SignInRequest}>
@@ -59,7 +63,6 @@ const SignIn = () => {
           <Input
             placeholder="E-mail"
             type="email"
-            error=""
             value={formData.email}
             onChange={handleChange('email')}
             disabled={isLoading}
@@ -82,7 +85,9 @@ const SignIn = () => {
         </Form>
         <Group marginTop="huge">
           <Link to="/sign-up">
-            <Text fontWeight="bold">Primeira vez? Cadastre-se</Text>
+            <Text fontWeight="bold">
+              Primeira vez? Cadastre-se
+            </Text>
           </Link>
         </Group>
       </Group>

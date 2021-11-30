@@ -5,16 +5,21 @@ import { ThemeProvider } from 'styled-components';
 const theme = {
   color: {
     primary: '#8C11BE',
+    primaryLight: '#AE28D6',
     text: '#fff',
     white: '#fff',
     danger: 'rgb(200, 100, 89)',
+    gray: '#C6C6C6',
+    green: '#03AC00',
+    red: '#C70000',
+    black: '#000',
     inherit: 'inherit',
   },
   font: {
     size: {
-      extraSmall: '14px',
-      small: '16px',
-      medium: '18px',
+      extraSmall: '12px',
+      small: '14px',
+      medium: '16px',
       large: '20px',
       extraLarge: '24px',
     },
@@ -39,6 +44,7 @@ Theme.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.any),
     PropTypes.string,
+    PropTypes.node,
   ]),
 };
 

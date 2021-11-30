@@ -1,14 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { IoMdExit, IoIosAddCircleOutline, IoIosRemoveCircleOutline } from 'react-icons/io';
 import dayjs from 'dayjs';
 import { Link, useHistory } from 'react-router-dom';
+import { css } from 'styled-components/macro';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import { getCashFlow } from '../../services/myWallet.services';
+import UserContext from '../../contexts/UserContext';
+import Container from '../shared/Container';
+import Group from '../shared/Group';
+import Text from '../shared/Text';
+import unselectable from '../../styles/utils/unselectable';
+import noHighlight from '../../styles/utils/noHighlight';
 
-export default function Wallet() {
+const Wallet = () => {
   const history = useHistory();
-  const user = JSON.parse(localStorage.getItem('user'));
-  const [cashFlow, setCashFlow] = useState([]);
+  const { user } = useContext(UserContext);
+  const [cashFlow, setCashFlow] = useState({
+    transactions: [],
+    total: 0,
+  });
+
+  dayjs.extend(utc);
+  dayjs.extend(timezone);
+  dayjs.tz.setDefault('Asia/Tokyo');
 
   const logout = () => {
     localStorage.removeItem('user');
@@ -18,211 +34,174 @@ export default function Wallet() {
   useEffect(() => {
     getCashFlow(user.token)
       .then((res) => {
+        console.log(res.data);
         setCashFlow(res.data);
       })
       .catch((error) => {
-        const { status } = error.response;
-        if (status === 401) {
-          logout();
-        }
+        console.error(error);
       });
   }, []);
 
-  let total = 0;
-
-  cashFlow.forEach((flow) => {
-    total += Number(flow.value);
-  });
-
   return (
-    <Container>
-      <Title>
-        <span>
-          Olá,
-          {' '}
-          {user.name}
-        </span>
-        <IoMdExit onClick={() => logout()} />
-      </Title>
+    <Container
+      paddingX="medium"
+      paddingY="medium"
+      flexProps={{ alignItems: 'flex-start' }}
+    >
+      <Grid>
+        <Group flexProps={{ justifyContent: 'space-between', row: true }}>
+          <Text variant="title" maxWidth="250px">
+            Olá,
+            {' '}
+            {user.name}
+          </Text>
+          <LogoutIcon onClick={() => logout()} />
+        </Group>
 
-      <CashFlowContainer>
-        {(cashFlow[0]) ? (
-          <>
-            <List>
-              {cashFlow.map(({
-                value, description, createdAt, id,
-              }) => (
-                <Row key={id}>
-                  <div>
-                    <DateText>
-                      {dayjs(createdAt).format('DD/MM')}
-                    </DateText>
-
-                    <span>
+        <TransactionsContainer>
+          {(cashFlow.transactions[0]) ? (
+            <>
+              <List>
+                {cashFlow.transactions.map(({
+                  value, description, createdAt, id,
+                }) => (
+                  <Transaction key={id}>
+                    <Text color="gray" fontSize="small">
+                      {dayjs(createdAt).format('DD/MM') }
+                    </Text>
+                    <Text color="black" fontSize="small" maxWidth="100%">
                       {description}
-                    </span>
-                  </div>
-                  <Value isInflow={value > 0}>
-                    {value}
-                  </Value>
-                </Row>
-              ))}
-            </List>
+                    </Text>
 
-            <Ballance isInflow={total > 0}>
-              <strong>SALDO</strong>
-              <span>
-                {total}
-              </span>
-            </Ballance>
-          </>
-        ) : (
-          <NoInfoContainer>
-            <span>Não há registros de entrada ou saída</span>
-          </NoInfoContainer>
-        )}
-      </CashFlowContainer>
+                    <Text
+                      fontSize="small"
+                      color={value >= 0 ? 'green' : 'red'}
+                    >
+                      {Number(value).toFixed(2)}
+                    </Text>
+                  </Transaction>
+                ))}
+              </List>
 
-      <ButtonContainer>
-        <BigButton to="add-inflow">
-          <IoIosAddCircleOutline />
-          <span>
+              <Group
+                flexProps={{ row: true, justifyContent: 'space-between' }}
+                paddingX="medium"
+                paddingY="medium"
+              >
+                <strong>SALDO</strong>
+                <Text
+                  color={cashFlow.total >= 0 ? 'green' : 'red'}
+                  fontWeight="bold"
+                >
+                  R$
+                  {' '}
+                  {cashFlow.total}
+                </Text>
+              </Group>
+            </>
+          ) : (
+            <Group>
+              <Text color="black">Não há registros de entrada ou saída</Text>
+            </Group>
+          )}
+        </TransactionsContainer>
+
+        <ButtonContainer>
+          <Button to="add-inflow">
+            <IoIosAddCircleOutline />
+            <span>
+              Nova
+              <br />
+              entrada
+            </span>
+          </Button>
+
+          <Button to="add-outflow">
+            <IoIosRemoveCircleOutline />
             Nova
-            {' '}
             <br />
-            {' '}
-            entrada
-          </span>
-        </BigButton>
-
-        <BigButton to="add-outflow">
-          <IoIosRemoveCircleOutline />
-          Nova
-          {' '}
-          <br />
-          {' '}
-          saída
-        </BigButton>
-      </ButtonContainer>
+            saída
+          </Button>
+        </ButtonContainer>
+      </Grid>
     </Container>
   );
-}
+};
 
-const DateText = styled.span`
-    margin-right: 5px;
-    color: #C6C6C6;
-`;
-const Container = styled.div`
-  padding: 20px 15px 5px 15px;
-`;
-
-const Title = styled.h1`
-    display: flex;
-    justify-content: space-between;
-    font-size: 24px;
-    margin-bottom: 22px;
-    color: #FFFFFF;
-    font-weight: bold;
-    padding-left: 10px;
-
-    & span {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90%;
-    }
+const Grid = styled.div`
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 20px 1fr 100px;
+  grid-template-columns: 100%;
+  grid-gap: 20px;  
 `;
 
-const ButtonContainer = styled.div`
-    height: 114px;
-    display: flex;
-    justify-content: space-between;
+const LogoutIcon = styled(IoMdExit)`
+  ${({ theme }) => css`
+    font-size: ${theme.font.size.extraLarge};
+    color: ${theme.color.text}
+  `}
 `;
 
-const BigButton = styled(Link)`
+const TransactionsContainer = styled.div`
+  ${({ theme }) => css`
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    width: calc(50% - 8px);
-    background-color: #A328D6;
-    color: #FFFFFF;
-    font-weight: bold;
-    border: none;
+    background-color: ${theme.color.white};
     border-radius: 5px;
-    font-size: 19px;
-    padding: 10px;
-    text-align: left;
-
-    &svg {
-        font-size: 27px;
-    }
-`;
-
-const NoInfoContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    font-size: 20px;
-    color: #868686;
-    margin: auto;
-
-    &span {
-        width: 250px;
-        text-align: center;
-    }
-`;
-
-const CashFlowContainer = styled.div`
-    background-color: #FFFFFF;
-    border-radius: 5px;
-    margin-bottom: 13px;
-    display: flex;
-    height: calc(86vh - 114px);
-    flex-direction: column;
-    justify-content: space-between;
+  `}
 `;
 
 const List = styled.ul`
-    font-size: 16px;
     margin: 21px 12px 0px 12px;
-    overflow: auto;
 `;
 
-const Row = styled.li`
+const Transaction = styled.li`
+  ${({ theme }) => css`
+    width: 100%;
+    display: grid;
+    grid-template-columns: 35px 1fr min-content;
+    grid-template-rows: 100%;
+    grid-gap: ${theme.spacing.medium};
+    margin-bottom: ${theme.spacing.medium};
+    max-width: 100%;
+  `}
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  min-height: 100px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Button = styled(Link)`
+  ${({ theme }) => css`
+    width: calc(50% - 8px);
+    height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-
-    &span {
-        margin-right: 10px;
-        color: #C6C6C6;
+    background-color: ${theme.color.primaryLight};
+    color: ${theme.color.text};
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    font-size: ${theme.font.size.large};
+    padding: ${theme.spacing.medium};
+    text-align: left;
+    overflow: hidden;
+    ${unselectable()}
+    ${noHighlight()}
+    & svg {
+        font-size: 27px;
     }
-
-    &div {
-        display: flex;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: calc(70%);
-    }
-
-
-    margin-bottom: 20px;
+  `}
 `;
 
-const Value = styled.b`
-    color: ${({ isInflow }) => (isInflow ? '#03AC00' : '#C70000')};
-`;
-
-const Ballance = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 13px;
-    font-size: 17px;
-
-    span {
-        color: ${({ isInflow }) => (isInflow ? '#03AC00' : '#C70000')};
-        font-weight: bold;
-    }
-`;
+export default Wallet;

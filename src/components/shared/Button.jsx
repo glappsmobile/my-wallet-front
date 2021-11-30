@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Loader from 'react-loader-spinner';
+import { css } from 'styled-components/macro';
 import flexify from '../../styles/utils/flexify';
+import unselectable from '../../styles/utils/unselectable';
+import noHighlight from '../../styles/utils/noHighlight';
 
 const Button = ({
   isLoading, children, ...otherProps
@@ -39,16 +42,19 @@ Button.defaultProps = {
 };
 
 const StyledButton = styled.button`
+  ${({ theme }) => css`
     ${flexify()}
+    ${unselectable()}
+    ${noHighlight()}
     height: 46px;
     width: 100%;
+    padding: 20px;
     border-radius: 5px;
     border: none;
-    background-color: #ae28d6;
+    background-color: ${theme.color.primaryLight};
+    font-size: ${theme.font.size.large};
     color: white;
     font-weight: bold;
-    font-size: 20px;
-    font-family: "Raleway", sans-serif;
     cursor: ${({ isLoading }) => (isLoading ? 'not-allowed' : 'pointer')};
     opacity: ${({ isLoading }) => (isLoading ? '0.5' : '1')};
 
@@ -64,18 +70,7 @@ const StyledButton = styled.button`
         cursor: inherit;
       }
     }
-
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  `}
 `;
 
 export default Button;

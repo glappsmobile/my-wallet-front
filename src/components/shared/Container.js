@@ -13,13 +13,15 @@ const Container = styled.div`
     fitContent,
   }) => css`
     ${flexify(flexProps)}
-    width:  ${(fitContent ? 'fit-content' : '100%')};
+    width:  ${(fitContent ? 'fit-content' : 'calc(100vw)')};
     max-width: 600px;
     min-height: 100vh;
+    height: 100vh;
     margin: auto;
     margin-top: ${theme.spacing[marginTop]};
     background: ${theme.color[background]};
     padding: ${`${theme.spacing[paddingY]} ${theme.spacing[paddingX]}`};
+    animation: moveInRight 500ms;
   `
 }
 `;

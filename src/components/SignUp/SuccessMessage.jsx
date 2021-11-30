@@ -17,11 +17,11 @@ const SuccessMessage = () => (
 );
 
 const Message = styled.span`
-    color: #FFFFFF;
-    font-family: "Raleway", sans-serif;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
+  color: #FFFFFF;
+  font-family: "Raleway", sans-serif;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
 `;
 
 export default SuccessMessage;
